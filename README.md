@@ -5,5 +5,7 @@ It uses a DynamoDB table to look up entitlements based on group membership and u
 
 It should sit behind an authenticating proxy which sets the following headers:
 
+```
 x-remote-user-groups: the groups the user belongs to
 x-remote-user: the username of the user
+```
