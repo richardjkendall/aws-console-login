@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Console login</title>
+  </head>
+  <body>
+    <h1>AWS Console Logins</h1>
+    <p>A list of available console logins for {{ user }}</p>
+    <ul>
+      {% for role in roles: %}
+        <li><a href="/login/{{ role[0] }}/{{ role[1] }}">Account # {{ role[0] }}, Role {{ role[1] }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

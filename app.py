@@ -1,0 +1,43 @@
+import logging
+import os, sys
+
+from flask import Flask, render_template
+from flask_cors import CORS
+from security import secured
+from roles import get_roles, check_role
+from login import generate_console_url
+
+app = Flask(__name__)
+CORS(app)
+
+# set logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] (%(threadName)-10s) %(message)s')
+logger = logging.getLogger(__name__)
+
+if not os.environ.get("TABLE_NAME"):
+  logger.error("TABLE_NAME not found")
+  sys.exit(1)
+
+@app.route("/")
+@secured
+def index(username, groups):
+  roles = get_roles(groups=groups, user=username)
+  return render_template("index.html", roles=roles, user=username)
+
+@app.route("/login/<string:account>/<string:role>")
+@secured
+def console_bounce(username, groups, account, role):
+  okay = check_role(
+    groups=groups,
+    user=username,
+    account=account,
+    role=role
+  )
+  if okay:
+    url = generate_console_url(account, role)
+    return render_template("login.html", url=url, account=account, role=role)
+  else:
+    return render_template("error.html")
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")
