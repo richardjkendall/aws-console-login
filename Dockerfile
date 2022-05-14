@@ -10,6 +10,10 @@ RUN pip install -r /app/requirements.txt
 # add code
 ADD *.py /app/
 
+# add templates
+RUN mkdir /app/templates
+ADD templates/*.html /app/templates/
+
 # run gunicorn
 WORKDIR /app
 CMD [ "gunicorn", "--bind", "0.0.0.0:5000", "--forwarded-allow-ips=\"*\"", "-w", "4", "app:app" ]
