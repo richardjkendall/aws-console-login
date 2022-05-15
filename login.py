@@ -12,7 +12,7 @@ def generate_console_url(account_id, role):
     RoleArn=f"arn:aws:iam::{account_id}:role/{role}",
     RoleSessionName="AssumeRoleSession",
   )
-  logger.info("Assumed role")
+  logger.info(f"Assumed role, {assumed_role_object}")
   url_credentials = {}
   url_credentials["sessionId"] = assumed_role_object.get("Credentials").get("AccessKeyId")
   url_credentials["sessionKey"] = assumed_role_object.get("Credentials").get("SecretAccessKey")

@@ -34,8 +34,11 @@ def console_bounce(username, groups, account, role):
     role=role
   )
   if okay:
-    url = generate_console_url(account, role)
-    return render_template("login.html", url=url, account=account, role=role)
+    try:
+      url = generate_console_url(account, role)
+      return render_template("login.html", url=url, account=account, role=role)
+    except:
+      return render_template("error.html")
   else:
     return render_template("error.html")
 
