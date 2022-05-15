@@ -24,6 +24,7 @@ def generate_console_url(account_id, role):
   request_parameters += "&SessionDuration=43200"
   request_parameters += "&Session=" + urllib.parse.quote_plus(json_string_with_temp_credentials)
   request_url = "https://signin.aws.amazon.com/federation" + request_parameters
+  logger.info(f"URL for getting console signon: {request_url}")
   r = requests.get(request_url)
   logger.info(f"Got response {r.text}")
   
