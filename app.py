@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from security import secured
 from roles import get_roles, check_role
-from login import generate_console_url
+from login import generate_console_url, get_caller_id
 
 app = Flask(__name__)
 CORS(app)
@@ -22,7 +22,15 @@ if not os.environ.get("TABLE_NAME"):
 @secured
 def index(username, groups):
   roles = get_roles(groups=groups, user=username)
-  return render_template("index.html", roles=roles, user=username)
+  caller_id = get_caller_id()
+  return render_template(
+    "index.html", 
+    roles=roles, 
+    user=username, 
+    id_user=caller_id["UserId"],
+    id_account=caller_id["Account"],
+    id_arn=caller_id["Arn"]
+  )
 
 @app.route("/login/<string:account>/<string:role>")
 @secured
