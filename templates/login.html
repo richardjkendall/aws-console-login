@@ -5,7 +5,13 @@
   </head>
   <body>
     <h1>Login for {{ account }} / {{ role }}</h1>
-    <p>Click this link to login</p>
+    <h2>Temporary credential details</h2>
+    <p>
+      <b>User:</b> {{ id_user }}<br>
+      <b>Account:</b> {{ id_account }}<br>
+      <b>Arn:</b> {{ id_arn }}
+    </p>
+    <h2>Click this link to login</h2>
     <a href="{{ url }}" target="_blank">{{ url }}</a>
   </body>
 </html>

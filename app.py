@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from security import secured
 from roles import get_roles, check_role
-from login import generate_console_url, get_caller_id
+from login import generate_console_url, get_caller_id, assume_role, get_caller_id_for_specific_id
 
 app = Flask(__name__)
 CORS(app)
@@ -42,11 +42,25 @@ def console_bounce(username, groups, account, role):
     role=role
   )
   if okay:
+    aro = assume_role(
+      account_id = account,
+      role = role
+    )
+    new_id = get_caller_id_for_specific_id(aro)
+    url = ""
     try:
-      url = generate_console_url(account, role)
-      return render_template("login.html", url=url, account=account, role=role)
+      url = generate_console_url(aro)
     except:
-      return render_template("error.html")
+      url = "[error]"
+    params = {
+      "id_user": new_id["UserId"],
+      "id_account": new_id["Account"],
+      "id_arn": new_id["Arn"],
+      "account": account,
+      "role": role,
+      "url": url
+    }
+    return render_template("login.html", **params)
   else:
     return render_template("error.html")
 
