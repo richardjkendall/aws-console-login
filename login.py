@@ -18,7 +18,7 @@ def get_caller_id_for_specific_id(assumed_role_object):
     aws_secret_access_key = assumed_role_object.get("Credentials").get("SecretAccessKey"),
     aws_session_token = assumed_role_object.get("Credentials").get("SessionToken")
   )
-  sts = new_session.client("sts", region_name="ap-southeast-2")
+  sts = new_session.client("sts")
   r = sts.get_caller_identity()
   return r
 
@@ -38,12 +38,12 @@ def generate_console_url(assumed_role_object):
   url_credentials["sessionToken"] = assumed_role_object.get("Credentials").get("SessionToken")
 
   logger.info("Getting signin token")
-  aws_federated_signin_endpoint = "https://ap-southeast-2.signin.aws.amazon.com/federation"
+  aws_federated_signin_endpoint = "https://signin.aws.amazon.com/federation"
   r = requests.get(
     aws_federated_signin_endpoint,
     params = {
       "Action": "getSigninToken",
-      "SessionDuration": "43200",
+      #"SessionDuration": "43200",
       "Session": json.dumps(url_credentials)
     }
   )
